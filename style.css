@@ -1,0 +1,10 @@
+body {
+    text-align: center;
+    overflow: hidden;
+    padding-top: 100px;
+    margin: 0px;
+}
+
+canvas {
+    border: 1px solid grey;
+}
