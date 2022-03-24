@@ -3,15 +3,20 @@
 // Setting up canvas
 let cnv = document.getElementById(`myCanvas`);
 let ctx = cnv.getContext(`2d`);
-cnv.height = innerHeight;
-cnv.width = innerWidth;
+cnv.height = innerHeight - 116;
+cnv.width = innerWidth - 4;
 
 // Global Variables
 circleX = 600;
 circleY = 400;
 let circleFill = `cyan`;
 let difficulty = 15;
+let radius = 75;
 let arrowUpIsPressed = false;
+let mouseX, mouseY;
+let mouseDistance;
+let distance = (circleX - mouseX) + (circleY - mouseY);
+
 
 // Event Listeners
 document.addEventListener(`mousemove`, mousemoveHandler);
@@ -25,11 +30,7 @@ function mousemoveHandler(event) {
     mouseY = event.y - cnvRect.y;
 }
 
-function difficultyControl() {
-
-}
-
-//Main function
+// Main function
 requestAnimationFrame(drawCircle)
 function drawCircle() {
 
@@ -46,25 +47,28 @@ function drawCircle() {
     //circle boundary control
     if (circleX < 0) {
         circleX += Math.random() * 16;
-    } else if (circleX > innerWidth) {
+    } else if (circleX > innerWidth - 4) {
         circleX -= Math.random() * 16;
     } else if (circleY < 0) {
         circleY += Math.random() * 16;
-    } else if (circleY > innerHeight) {
+    } else if (circleY > innerHeight - 116) {
         circleY -= Math.random() * 16;
     }
+
+
 
     // draw a circle
     ctx.fillStyle = circleFill;
     ctx.beginPath();
-    ctx.arc(circleX, circleY, 75, Math.PI * 2, 0);
+    ctx.arc(circleX, circleY, radius, Math.PI * 2, 0);
     ctx.fill();
 
+    console.log(distance);
 
     requestAnimationFrame(drawCircle);
 }
 
-function keypressHandler(event) {
+function keypressHandler(event) { //difficulty control
     console.log(event.code);
     if (event.code == `KeyQ`) {
         difficulty++;
@@ -72,5 +76,13 @@ function keypressHandler(event) {
     } else if (event.code == `KeyA`) {
         difficulty--;
         console.log(difficulty);
+    }
+}
+
+// color changer
+// work with radius on portfolio notes
+function colorChange() {
+    if (distance < radius^2) {
+        circleFill = `red`;
     }
 }
