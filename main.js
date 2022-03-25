@@ -3,7 +3,7 @@
 // Setting up canvas
 let cnv = document.getElementById(`myCanvas`);
 let ctx = cnv.getContext(`2d`);
-cnv.height = innerHeight - 116;
+cnv.height = innerHeight - 112;
 cnv.width = innerWidth - 4;
 
 // Global Variables
@@ -14,9 +14,7 @@ let difficulty = 15;
 let radius = 75;
 let arrowUpIsPressed = false;
 let mouseX, mouseY;
-let mouseDistance;
-let distance = (circleX - mouseX) + (circleY - mouseY);
-
+let distance;
 
 // Event Listeners
 document.addEventListener(`mousemove`, mousemoveHandler);
@@ -51,11 +49,9 @@ function drawCircle() {
         circleX -= Math.random() * 16;
     } else if (circleY < 0) {
         circleY += Math.random() * 16;
-    } else if (circleY > innerHeight - 116) {
+    } else if (circleY > innerHeight - 112) {
         circleY -= Math.random() * 16;
     }
-
-
 
     // draw a circle
     ctx.fillStyle = circleFill;
@@ -63,26 +59,35 @@ function drawCircle() {
     ctx.arc(circleX, circleY, radius, Math.PI * 2, 0);
     ctx.fill();
 
-    console.log(distance);
+    if (mouseX < circleX) {
+        distance = ((circleX ** 2 - mouseX ** 2) + (circleY ** 2 - mouseY ** 2)) ** 0.5;
+        if (distance <= 75) {
+            console.log(distance);
+        } else {
+            distance = ((mouseX ** 2 - circleX ** 2) + (mouseY ** 2 - circleY ** 2)) ** 0.5;
+        }
 
-    requestAnimationFrame(drawCircle);
-}
-
-function keypressHandler(event) { //difficulty control
-    console.log(event.code);
-    if (event.code == `KeyQ`) {
-        difficulty++;
-        console.log(difficulty);
-    } else if (event.code == `KeyA`) {
-        difficulty--;
-        console.log(difficulty);
+        requestAnimationFrame(drawCircle);
     }
-}
 
-// color changer
-// work with radius on portfolio notes
-function colorChange() {
-    if (distance < radius^2) {
-        circleFill = `red`;
+    function keypressHandler(event) { //difficulty control
+        console.log(event.code);
+        if (event.code == `KeyQ`) {
+            difficulty++;
+            console.log(difficulty);
+        } else if (event.code == `KeyA`) {
+            difficulty--;
+            console.log(difficulty);
+        }
+    }
+
+    // color changer
+    // work with radius on portfolio notes
+    function colorChange() {
+        if (distance <= radius) {
+            circleFill = `red`;
+        } else {
+            circleFill = `cyan`;
+        }
     }
 }
