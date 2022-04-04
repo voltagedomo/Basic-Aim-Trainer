@@ -3,7 +3,7 @@
 // Setting up canvas
 let cnv = document.getElementById(`myCanvas`);
 let ctx = cnv.getContext(`2d`);
-cnv.height = innerHeight - 112;
+cnv.height = innerHeight - 116;
 cnv.width = innerWidth - 4;
 
 // Global Variables
@@ -49,7 +49,7 @@ function drawCircle() {
         circleX -= Math.random() * 16;
     } else if (circleY < 0) {
         circleY += Math.random() * 16;
-    } else if (circleY > innerHeight - 112) {
+    } else if (circleY > innerHeight - 108) {
         circleY -= Math.random() * 16;
     }
 
@@ -59,35 +59,26 @@ function drawCircle() {
     ctx.arc(circleX, circleY, radius, Math.PI * 2, 0);
     ctx.fill();
 
-    if (mouseX < circleX) {
-        distance = ((circleX ** 2 - mouseX ** 2) + (circleY ** 2 - mouseY ** 2)) ** 0.5;
-        if (distance <= 75) {
-            console.log(distance);
-        } else {
-            distance = ((mouseX ** 2 - circleX ** 2) + (mouseY ** 2 - circleY ** 2)) ** 0.5;
-        }
-
-        requestAnimationFrame(drawCircle);
+    distance = ((circleX - mouseX) ** 2 + (circleY - mouseY) ** 2) ** 0.5;
+    if (distance <= radius) {
+        circleFill = `red`;
+    } else {
+        circleFill = `cyan`;
     }
 
-    function keypressHandler(event) { //difficulty control
-        console.log(event.code);
-        if (event.code == `KeyQ`) {
-            difficulty++;
-            console.log(difficulty);
-        } else if (event.code == `KeyA`) {
-            difficulty--;
-            console.log(difficulty);
-        }
-    }
+    requestAnimationFrame(drawCircle);
+}
 
-    // color changer
-    // work with radius on portfolio notes
-    function colorChange() {
-        if (distance <= radius) {
-            circleFill = `red`;
-        } else {
-            circleFill = `cyan`;
+function keypressHandler(event) { //difficulty control
+    console.log(event.code);
+    if (event.code == `KeyQ`) {
+        difficulty++;
+        console.log(difficulty);
+    } else if (event.code == `KeyA`) {
+        difficulty--;
+        console.log(difficulty);
+        if (difficulty <= 0) {
+            difficulty = 1;
         }
     }
 }
